@@ -33,7 +33,7 @@ public class WorldGenerator {
         lightGreen = 17;
         water();
         seedMap();
-        seedIslands(5);
+        seedIslands(1);
 
         searchAndExpand(10, seedColor, lightGreen, 0.99);
         searchAndExpand(8, seedColor, 18, 0.85);
