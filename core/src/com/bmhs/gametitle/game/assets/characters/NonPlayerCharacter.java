@@ -25,7 +25,7 @@ public class NonPlayerCharacter extends Character {
         BehaviorTreeParser<NonPlayerCharacter> parser = new BehaviorTreeParser<>(BehaviorTreeParser.DEBUG_HIGH);
         behaviorTree = parser.parse(reader, this);
     }
-    public void tick() {
+    public void tickTree() {
         behaviorTree.step();
     }
 
@@ -44,4 +44,11 @@ public class NonPlayerCharacter extends Character {
             System.out.println("I'm at " + getY() + " " + getX());
         }
     }
+    public void walk() {
+        if(Math.random() > .95) {
+            adjustX(MathUtils.random(-10, 10));
+            adjustY(MathUtils.random(-10, 10));
+        }
+    }
+
 }
