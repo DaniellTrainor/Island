@@ -11,7 +11,7 @@ public class WorldGenerator {
 
     private int worldMapRows, worldMapColumns;
     private int[][] worldIntMap;
-
+    private TileHandler tileHandler;
     private int seedColor, lightGreen, Green;
 
     private void generateWorldTextFile() {
@@ -23,13 +23,14 @@ public class WorldGenerator {
         this.worldMapRows = worldMapRows;
         this.worldMapColumns = worldMapColumns;
         worldIntMap = new int[worldMapRows][worldMapColumns];
+        TileHandler tileHandler = TileHandler.getTileHandler();
         seedColor = 2;
         lightGreen = 17;
         water();
         seedMap();
         seedIslands(1);
 
-        // Randomly generate the island
+
         generateRandomIsland();
 
         generateWorldTextFile();
@@ -37,7 +38,7 @@ public class WorldGenerator {
     }
 
     private void generateRandomIsland() {
-        int numIslands = MathUtils.random(1, 5); // Generate random number of islands
+        int numIslands = MathUtils.random(1, 5);
         for (int i = 0; i < numIslands; i++) {
             seedIslands(1);
             searchAndExpand(10, seedColor, lightGreen, 0.99);
@@ -45,8 +46,38 @@ public class WorldGenerator {
             searchAndExpand(6, seedColor, 19, 0.55);
             searchAndExpand(5, seedColor, 20, 0.65);
             searchAndExpand(4, seedColor, 21, 0.25);
+
+
+            for(int r = 0; r < worldIntMap.length; r++) {
+                for(int c = 0; c < worldIntMap[r].length; c++) {
+                    if (worldIntMap[r][c] == seedColor) {
+
+                        int elevation = calculateElevation(r, c);
+
+                        assignColorBasedOnElevation(r, c, elevation);
+                    }
+                }
+            }
         }
     }
+
+    private int calculateElevation(int row, int column) {
+        return MathUtils.random(4);
+    }
+
+    private void assignColorBasedOnElevation(int row, int column, int elevation) {
+
+        int[] elevationColors = {22, 23, 24, 25, 26}; // Example colors representing different elevation levels
+
+
+        if (elevation >= 0 && elevation < elevationColors.length) {
+            worldIntMap[row][column] = elevationColors[elevation];
+        } else {
+
+            worldIntMap[row][column] = 20;
+        }
+    }
+
 
 
     private void seedIslands(int num) {
